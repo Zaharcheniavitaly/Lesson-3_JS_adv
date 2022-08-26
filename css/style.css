@@ -1,0 +1,148 @@
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	line-height: 17px;
+	font-weight: 400;
+	color: #222222;
+}
+
+.container{
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.header{
+	min-height: 75px;
+	background-color: #5b5d9f;
+   position: fixed;
+   width: 100%;
+   top: 0;
+   z-index: 1;
+	
+}
+
+.header-wrapper{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 10px 0;
+}
+
+.header-title{
+	font-size: 24px;
+	font-weight: 900;
+	color: white;
+	text-transform: uppercase;
+}
+
+.btn-cart{
+padding-top: 15px;
+background: transparent;
+border: none;
+cursor: pointer;
+}
+
+.headerBasket {
+	position: relative;
+
+}
+
+.headerBasketCount {
+	display: inline-block;
+	width: 19px;
+	height: 19px;
+	color: white;
+	background: #f16d7f;
+	border-radius: 50%;
+	position: absolute;
+	text-align: center;
+	right: -8px;
+	top: -19px;
+	font-size: 14px;
+	line-height: 19px;
+}
+
+.hidden {
+	display: none;
+}
+
+.products{
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	row-gap: 45px;
+	column-gap: 45px;
+	width: 80%;
+	max-width: 1200px;
+	margin: auto;
+	margin-top: 95px;
+	
+}
+
+.product-item{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	background: white;
+	padding: 20px;
+	box-shadow: 0px 3px 6px 1px rgb(0 0 0 / 29%);
+	border-radius: 3px;
+	
+}
+
+.product-title{
+margin-bottom: auto;
+font-size: 20px;
+text-transform: uppercase;
+}
+
+.product-img{
+width: 100%;
+height: 270px;
+object-fit: contain;
+}
+
+.product-price{
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 19px;
+	color: #a49e9f;
+}
+
+.product__buy-btn{
+padding: 10px 15px;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+outline: none;
+background: none;
+font-family: inherit;
+font-size: inherit;
+font-weight: 700;
+box-shadow: 0px 4px 5px 1px rgb(0 0 0 / 50%);
+transition: all ease-in-out .4s;
+
+}
+
+.product__buy-btn:hover{
+	background: red;
+	color: white;
+}
+
+.product__buy-btn_active{
+	border: 1px solid transparent;
+	background-color: #F16D7F;
+
+}
+
+.footer{
+	min-height: 55px;
+	background-color: #5b5d9f;
+}
+
+h4{
+	padding-top: 20px;
+	color: white;
+}
