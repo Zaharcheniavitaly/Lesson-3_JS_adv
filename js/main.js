@@ -1,69 +1,34 @@
 'use strict';
 
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
 class ProductList {
 	constructor(container = '.products') {
 		this.container = container;
-		this.goods = [];
-		this._fetchProducts();//рекомендация, чтобы метод был вызван в текущем классе
-		this.render();//вывод товаров на страницу
+		this.goods = []; // массив товаров из JSON документа
+		//this.totalPrice() = []; // массив объектов
+		this._getProducts()  // _ рекомендация, чтобы метод был вызван в текущем классе
+			.then(data => { // data - объект js
+				this.goods = [...data];
+				console.log(data);
+				this.render();
+			});
 
-		this.calcuTotalPrice(); // общая сумма товаров
 	}
 
-	_fetchProducts() {
-		this.goods = [
-			{
-				id: 1,
-				title: 'Notebook',
-				img: 'https://i.ibb.co/KGhr6FQ/notebook.jpg',
-				price: 2000
-			},
-			{
-				id: 2,
-				title: 'Mouse',
-				img: 'https://i.ibb.co/jh6d9Ds/mouse.jpg',
-				price: 20
-			},
-			{
-				id: 3,
-				title: 'Keyboard',
-				img: 'https://i.ibb.co/vHL3Ydv/klaviatura.jpg',
-				price: 200
-			},
-			{
-				id: 4,
-				title: 'Gamepad',
-				img: 'https://i.ibb.co/09GSdXZ/gamepad.jpg',
-				price: 50
-			},
-			{
-				id: 5,
-				title: 'Monitor',
-				img: 'https://i.ibb.co/Sd4Z07m/monitor.jpg',
-				price: 1600
-			},
-			{
-				id: 6,
-				title: 'System unit',
-				img: 'https://i.ibb.co/Z19mKm7/syst-unit.jpg',
-				price: 1900
-			},
-		];
+	_getProducts() {
+		return fetch(`${API}/catalogData.json`)
+			.then(result => result.json())
+			.catch(error => {
+				console.log(error);
+			})
 	}
 
-	render() {
-		const block = document.querySelector(this.container);
-		for (let product of this.goods) {
-			const item = new ProductItem(product);
-			block.insertAdjacentHTML("beforeend", item.render());
-			//              block.innerHTML += item.render();
-		}
-	}
 
 	/**
-	 * метод суммирует все цены 
-	 * @returns возвращает итоговую сумму
-	 */
+ * метод суммирует все цены 
+ * @returns возвращает итоговую сумму
+ */
 	calcuTotalPrice() {
 		// let totalPrice = 0;
 		// for (let i = 0; i < this.goods.length; i++) {
@@ -74,24 +39,41 @@ class ProductList {
 
 		//	или так:
 
-		const totalPrice = this.goods.reduce((total, item) => total + item.price, 0);
-		console.log(totalPrice);
+		return this.goods.reduce((total, item) => total += item.price, 0);
+		//console.log(totalPrice);
 	}
+
+
+	render() {
+		const block = document.querySelector(this.container);
+		for (let product of this.goods) {
+			const item = new ProductItem(product);
+			console.log(item);
+			//this.goods.push(productObj);
+			block.insertAdjacentHTML("beforeend", item.render());
+			//              block.innerHTML += item.render();
+		}
+	}
+
+
 
 }
 
 
 class ProductItem {
-	constructor(product) {
-		this.title = product.title;
-		this.id = product.id;
+	constructor(product, img = 'https://i.ibb.co/Sd4Z07m/monitor.jpg') {
+		this.title = product.product_name;
+		this.id = product.id_product;
 		this.price = product.price;
-		this.img = product.img;
+		this.img = img;
 	}
+
+
+
 	render() {
 
 		return `
-		        <div class="product-item">
+		        <div class="product-item" data-id="${this.id}">
                  <h3 class="product-title">${this.title}</h3>
 		           <img class="product-img" src="${this.img} alt="${this.title}">
                  <p class="product-price">${this.price.toLocaleString()} $</p>
@@ -103,14 +85,23 @@ class ProductItem {
 
 let list = new ProductList();
 list.render();
+list.calcuTotalPrice();
+
+
+
+
 
 
 
 class BasketList {
-
-	addProduct() {
+	constructor(container = '.basket') {
+		this.container = container;
+		this.basket = [];
+		this.addProduct();
+		this.render();//вывод товаров на страницу
 
 	}
+
 
 	removeProduct() {
 
@@ -120,21 +111,78 @@ class BasketList {
 
 	}
 
-	render() {
+	addProduct() {
+		this.basket = [
+			{
+				title: 'Notebook',
+				price: 2000
+			},
+			{
+				title: 'Mouse',
+				price: 20
+			},
+			{
+				title: 'Keyboard',
+				price: 200
+			},
+			{
+				title: 'Gamepad',
+				price: 50
+			},
+			{
+				title: 'Monitor',
+				price: 1600
+			},
+			{
+				title: 'System unit',
+				price: 1900
+			},
+		];
+	}
 
+	render() {
+		const block = document.querySelector(this.container);
+		for (let product of this.basket) {
+			const item = new BasketItem(product);
+			block.insertAdjacentHTML("beforeend", item.render());
+			//              block.innerHTML += item.render();
+		}
 	}
 
 }
 
 
 class BasketItem {
+	constructor(product, img = 'https://i.ibb.co/Sd4Z07m/monitor.jpg') {
+		this.title = product.title;
+		this.id = product.id;
+		this.price = product.price;
+		this.img = img;
+	}
 
 	render() {
 
+		return `
+		<div class="cart-item" data-id="${this.id}">
+            <div class="product-bio">
+            <img src="${this.img}" alt="${this.title}">
+            <div class="product-desc">
+            <p class="product-title_basket">${this.title}</p>
+            <p class="product-quantity">Quantity: ${this.quantity}</p>
+        <p class="product-single-price">${this.price} $</p>
+        </div>
+        </div>
+        <div class="right-block">
+            <p class="product-price_basket">$${this.quantity * this.price}</p>
+            <button class="del-btn" data-id="${this.title}">&times;</button>
+        </div>
+        </div>
+				`
 	}
 
 }
 
+let basketList = new BasketList();
 
 
 
