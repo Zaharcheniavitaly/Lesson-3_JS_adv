@@ -96,10 +96,13 @@ list.calcuTotalPrice();
 class BasketList {
 	constructor(container = '.basket') {
 		this.container = container;
-		this.basket = [];
-		this.addProduct();
-		this.render();//вывод товаров на страницу
-
+		this.basket = []; // массив товаров
+		this._clickBasket();
+		this._addBasketProduct()
+			.then(data => { //data - объект js
+				this.basket = data.contents;
+				this.render();
+			});
 	}
 
 
@@ -111,33 +114,12 @@ class BasketList {
 
 	}
 
-	addProduct() {
-		this.basket = [
-			{
-				title: 'Notebook',
-				price: 2000
-			},
-			{
-				title: 'Mouse',
-				price: 20
-			},
-			{
-				title: 'Keyboard',
-				price: 200
-			},
-			{
-				title: 'Gamepad',
-				price: 50
-			},
-			{
-				title: 'Monitor',
-				price: 1600
-			},
-			{
-				title: 'System unit',
-				price: 1900
-			},
-		];
+	_addBasketProduct() {
+		return fetch(`${API}/getBasket.json`)
+			.then(result => result.json())
+			.catch(error => {
+				console.log(error());
+			})
 	}
 
 	render() {
@@ -149,15 +131,23 @@ class BasketList {
 		}
 	}
 
+	_clickBasket() {
+		document.querySelector('.btn-cart').addEventListener('click', () => {
+			document.querySelector(this.container).classList.toggle('hidden');
+		})
+	}
+
 }
 
 
 class BasketItem {
+
 	constructor(product, img = 'https://i.ibb.co/Sd4Z07m/monitor.jpg') {
-		this.title = product.title;
-		this.id = product.id;
+		this.title = product.product_name;
+		this.id = product.id_product;
 		this.price = product.price;
 		this.img = img;
+		this.quantity = product.quantity;
 	}
 
 	render() {
@@ -169,7 +159,7 @@ class BasketItem {
             <div class="product-desc">
             <p class="product-title_basket">${this.title}</p>
             <p class="product-quantity">Quantity: ${this.quantity}</p>
-        <p class="product-single-price">${this.price} $</p>
+        <p class="product-single-price">${this.price.toLocaleString()} $</p>
         </div>
         </div>
         <div class="right-block">
