@@ -46,6 +46,11 @@ border: none;
 cursor: pointer;
 }
 
+.btn-cart__img:hover, a:focus, a:active {
+	opacity: .6;
+	transition: .2s all;
+}
+
 .headerBasket {
 	position: relative;
 
