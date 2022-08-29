@@ -127,7 +127,6 @@ class BasketList {
 		for (let product of this.basket) {
 			const item = new BasketItem(product);
 			block.insertAdjacentHTML("beforeend", item.render());
-			//              block.innerHTML += item.render();
 		}
 	}
 
