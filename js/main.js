@@ -157,7 +157,7 @@ class BasketItem {
             <img src="${this.img}" alt="${this.title}">
             <div class="product-desc">
             <p class="product-title_basket">${this.title}</p>
-            <p class="product-quantity">Quantity: ${this.quantity}</p>
+            <p class="product-quantity">Количество: ${this.quantity}</p>
         <p class="product-single-price">${this.price.toLocaleString()} $</p>
         </div>
         </div>
